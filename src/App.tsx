@@ -77,6 +77,16 @@ export default function App() {
     setError(null);
   }
 
+  // e.g., inside App.tsx
+function Preview({ src }: { src?: string }) {
+  if (!src) return null;
+  return (
+    <div className="imageFrame">
+      <img className="mealImage" src={src} alt="Meal preview" />
+    </div>
+  );
+}
+
   /** Robust fetch that tolerates empty/non-JSON responses and shows clear errors */
   async function analyze() {
     setError(null);

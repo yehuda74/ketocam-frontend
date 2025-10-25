@@ -40,3 +40,33 @@
 .read-the-docs {
   color: #888;
 }
+/* Full-viewport app shell with safe-area padding on iPhone */
+.app {
+  min-height: 100vh;
+  padding: 16px env(safe-area-inset-right) calc(16px + env(safe-area-inset-bottom))
+           env(safe-area-inset-left);
+  box-sizing: border-box;
+  display: grid;
+  gap: 16px;
+  place-items: center;
+}
+
+/* A responsive frame that preserves aspect ratio */
+.imageFrame {
+  width: min(100vw, 700px);      /* cap width on desktop, full width on phone */
+  max-height: min(70vh, 80dvh);  /* keep room for buttons/outputs */
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0f1324;           /* subtle backdrop behind transparent images */
+}
+
+/* The image itself scales to fit without cropping */
+.mealImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* show entire image */
+}
+
+/* If you want a square preview (optional) */
+/* .imageFrame { aspect-ratio: 1 / 1; } */
