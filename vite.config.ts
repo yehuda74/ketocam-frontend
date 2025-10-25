@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: './', // 👈 THIS LINE FIXES BLANK PAGE ON VERCEL
   plugins: [
     react(),
     VitePWA({
@@ -24,30 +25,12 @@ export default defineConfig({
           { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
         ]
       },
-
-      // ✅ Fix B: no "self" usage — safe for TypeScript
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
-        navigateFallback: '/index.html',
         runtimeCaching: [
           {
-            // app shell / same-origin files
             urlPattern: ({ sameOrigin }) => sameOrigin,
             handler: 'StaleWhileRevalidate',
             options: { cacheName: 'app-shell' },
-          },
-          {
-            // cache external API (your ngrok/n8n endpoint)
-            urlPattern: ({ url }) =>
-              url.origin.includes('ngrok-free.dev') ||
-              url.origin.includes('vercel.app') ||
-              url.origin.includes('netlify.app'),
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              networkTimeoutSeconds: 10,
-              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 },
-            },
           },
         ],
       },
