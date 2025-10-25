@@ -32,7 +32,12 @@ export default defineConfig({
               globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
               navigateFallback: '/index.html',
               runtimeCaching: [
-                { urlPattern: ({ sameOrigin }) => sameOrigin, handler: 'StaleWhileRevalidate', options: { cacheName: 'app-shell' } },
+                // app shell / same-origin files
+                {
+                  urlPattern: ({ sameOrigin }) => sameOrigin,
+                  handler: 'StaleWhileRevalidate',
+                  options: { cacheName: 'app-shell' },
+                },
               ],
             },
           }),
