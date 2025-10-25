@@ -1,44 +1,44 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>KetoCam AI</title>
+<!-- 1) Show any runtime error instead of a silent blank page -->
+<script>
+  window.addEventListener('error', (e) => {
+    const div = document.createElement('div');
+    div.style.cssText =
+      'position:fixed;z-index:99999;left:0;right:0;top:0;background:#b00020;color:#fff;padding:10px;font:14px/1.4 system-ui';
+    div.textContent = 'Runtime error: ' + (e?.error?.message || e.message || 'Unknown');
+    document.body.prepend(div);
+    console.error('Runtime error:', e.error || e);
+  });
+</script>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+<!-- 2) If URL has ?sw-kill=1, unregister any service worker and clear caches, then reload -->
+<script>
+  (function () {
+    const u = new URL(location.href);
+    if (u.searchParams.has('sw-kill')) {
+      (async () => {
+        try {
+          const regs = await (navigator.serviceWorker?.getRegistrations?.() || []);
+          for (const r of regs) await r.unregister();
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.webmanifest" />
+          if (window.caches?.keys) {
+            const keys = await caches.keys();
+            await Promise.all(keys.map((k) => caches.delete(k)));
+          }
 
-    <!-- Apple iOS PWA Support -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="KetoCam" />
-    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+          try { localStorage.clear?.(); } catch {}
+          try { sessionStorage.clear?.(); } catch {}
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#0b1020" />
+          const b = document.createElement('div');
+          b.textContent = 'Service worker & caches cleared. Reloading…';
+          b.style.cssText =
+            'position:fixed;top:0;left:0;right:0;background:#0b1020;color:#fff;padding:8px;z-index:9999';
+          document.body.appendChild(b);
 
-    <!-- Description -->
-    <meta
-      name="description"
-      content="Snap a meal photo and get instant keto analysis using KetoCam AI."
-    />
-
-    <!-- Optional SEO Tags -->
-    <meta property="og:title" content="KetoCam AI" />
-    <meta
-      property="og:description"
-      content="Instant keto meal analysis – snap a photo and see if it fits your keto goals!"
-    />
-    <meta property="og:image" content="/icons/icon-512.png" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="/" />
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+          setTimeout(() => location.replace(u.origin + u.pathname), 400);
+        } catch (e) {
+          console.error('SW kill failed:', e);
+        }
+      })();
+    }
+  })();
+</script>
