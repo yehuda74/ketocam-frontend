@@ -1,72 +1,191 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ===== Base & layout ===== */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: #0b1020;
+  color: #ffffff;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-/* Full-viewport app shell with safe-area padding on iPhone */
-.app {
+.viewport {
   min-height: 100vh;
-  padding: 16px env(safe-area-inset-right) calc(16px + env(safe-area-inset-bottom))
-           env(safe-area-inset-left);
-  box-sizing: border-box;
   display: grid;
-  gap: 16px;
+  place-items: center;
+  padding: 16px env(safe-area-inset-right) calc(16px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+  box-sizing: border-box;
+}
+
+/* iPhone shell (your existing visual frame) */
+.phone {
+  width: min(420px, 100%);
+  border-radius: 28px;
+  background: #0f1530;
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.notch {
+  height: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,0));
+}
+
+.screen {
+  padding: 18px 16px 28px;
+}
+
+/* ===== Hero ===== */
+.heroCenter {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.appicon { font-size: 40px; }
+.heroTitle {
+  margin: 8px 0 4px;
+  font-size: 22px;
+  color: #00d4ff;
+  font-weight: 700;
+}
+.heroSub { margin: 0; color: #b8c4f0; }
+
+/* ===== Cards / panels ===== */
+.glass {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.uploadCard {
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cameraCircle {
+  width: 68px;
+  height: 68px;
+  margin: 6px auto 12px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(100% 100% at 50% 0%, #1b254a 0%, #111834 100%);
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+.uploadTitle { margin: 4px 0 2px; font-size: 18px; font-weight: 700; }
+.uploadSub   { margin: 0 0 8px; color: #a9b5e1; }
+.uploadHint  { margin: 0; font-size: 13px; color: #8ea0d9; display: inline-flex; gap: 6px; align-items: center; }
+.uploadIcon  { display: inline-block; color: #8ea0d9; }
+
+/* ===== Preview image =====
+   This is the key part: the image will never overflow and always fit. */
+.preview {
+  margin-top: 12px;
+  width: 100%;
+  max-height: min(60vh, 70dvh); /* roomy on phones, safe on desktop */
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0c1124;
+  display: grid;
   place-items: center;
 }
-
-/* A responsive frame that preserves aspect ratio */
-.imageFrame {
-  width: min(100vw, 700px);      /* cap width on desktop, full width on phone */
-  max-height: min(70vh, 80dvh);  /* keep room for buttons/outputs */
-  border-radius: 16px;
-  overflow: hidden;
-  background: #0f1324;           /* subtle backdrop behind transparent images */
-}
-
-/* The image itself scales to fit without cropping */
-.mealImage {
+.preview img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;  /* show entire image */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;       /* show entire image without cropping */
+  image-orientation: from-image;
 }
 
-/* If you want a square preview (optional) */
-/* .imageFrame { aspect-ratio: 1 / 1; } */
+/* ===== Action panel ===== */
+.panel { margin-top: 12px; padding: 12px; }
+
+.cta {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  color: #0b1020;
+  background: #00d4ff;
+  transition: filter .15s ease;
+}
+.cta:disabled { opacity: .65; cursor: default; }
+.cta:not(:disabled):hover { filter: brightness(.9); }
+
+/* Toast / errors */
+.toast {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.toast.error { background: #3a1020; border: 1px solid #b00020; color: #ffd7df; }
+
+/* ===== Results ===== */
+.result { padding: 14px; margin-top: 12px; }
+
+.topBadgeRow { display: flex; justify-content: center; margin-bottom: 8px; }
+.topBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.15);
+  font-size: 12px; letter-spacing: .3px;
+  background: rgba(255,255,255,.06);
+}
+.topBadge.ok { background: rgba(0, 212, 255, .15); border-color: rgba(0,212,255,.4); color: #aef5ff; }
+.topBadge.no { background: rgba(255, 86, 126, .15); border-color: rgba(255,86,126,.4); color: #ffc3d0; }
+
+.row { display: flex; gap: 8px; align-items: center; }
+.between { justify-content: space-between; }
+
+.meal  { margin: 0; font-size: 18px; }
+.reason { margin: 6px 0 10px; color: #c8d2ff; }
+
+.macros {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pill {
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+}
+.pill.warn { border-color: #ff6a6a; box-shadow: 0 0 0 1px rgba(255,106,106,.2) inset; }
+.pill .k { font-size: 12px; color: #9db0ec; }
+.pill .v { font-weight: 700; font-size: 16px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  font-size: 12px; color: #d9e1ff;
+}
+
+.swaps { margin: 8px 0 0 18px; padding: 0; }
+.swaps li { margin: 4px 0; }
+.muted { color: #a5b2e7; }
+
+.scores { margin-top: 6px; text-align: center; color: #cdd7ff; }
+
+/* Spacer at the bottom so iOS toolbar doesn’t overlap */
+.spacer { height: max(16px, env(safe-area-inset-bottom)); }
+
+/* Larger screens: widen phone a bit */
+@media (min-width: 920px) {
+  .phone { width: 460px; }
+  .preview { max-height: 65vh; }
+}

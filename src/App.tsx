@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
+import "./App.css";
 
 /* ---------- Types ---------- */
 
@@ -77,16 +78,6 @@ export default function App() {
     setError(null);
   }
 
-  // e.g., inside App.tsx
-function Preview({ src }: { src?: string }) {
-  if (!src) return null;
-  return (
-    <div className="imageFrame">
-      <img className="mealImage" src={src} alt="Meal preview" />
-    </div>
-  );
-}
-
   /** Robust fetch that tolerates empty/non-JSON responses and shows clear errors */
   async function analyze() {
     setError(null);
@@ -113,20 +104,14 @@ function Preview({ src }: { src?: string }) {
 
       clearTimeout(timeout);
 
-      // Read raw body (lets us surface better errors)
       const contentType = res.headers.get("content-type") || "";
       const raw = await res.text();
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${raw.slice(0, 300)}`);
-      }
-      if (!raw.trim()) {
-        throw new Error("Empty response from server.");
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${raw.slice(0, 300)}`);
+      if (!raw.trim()) throw new Error("Empty response from server.");
 
       let json: any;
       try {
-        // prefer JSON if declared, but still attempt to parse the raw body
         json = contentType.includes("application/json") ? JSON.parse(raw) : JSON.parse(raw);
       } catch {
         throw new Error(`Expected JSON but got:\n${raw.slice(0, 300)}`);
@@ -191,11 +176,18 @@ function Preview({ src }: { src?: string }) {
               Drag &amp; drop or tap to upload
             </p>
 
-            <input ref={fileInputRef} hidden type="file" accept="image/*" onChange={onFile} />
+            <input
+              ref={fileInputRef}
+              hidden
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={onFile}
+            />
 
             {previewUrl && (
               <div className="preview">
-                <img src={previewUrl} alt="preview" />
+                <img src={previewUrl} alt="Meal preview" />
               </div>
             )}
           </div>
@@ -213,14 +205,12 @@ function Preview({ src }: { src?: string }) {
           {/* Results */}
           {data && (
             <div className="panel glass result">
-              {/* TOP BADGE */}
               <div className="topBadgeRow">
                 <button className={`topBadge ${isKeto ? "ok" : "no"}`}>
                   {isKeto ? "Keto Friendly" : "Not Keto Friendly"}
                 </button>
               </div>
 
-              {/* Title + Reason */}
               <div className="row between">
                 <h3 className="meal">{data.mealName || "Unknown meal"}</h3>
               </div>
@@ -228,7 +218,6 @@ function Preview({ src }: { src?: string }) {
                 <strong>{data.ketoReason}</strong>
               </p>
 
-              {/* Macros (order: Net Carbs, Calories, Fat, Protein) */}
               <div className="macros">
                 <div className={`pill ${data.netCarbs > 8 ? "warn" : ""}`}>
                   <div className="k">Net Carbs</div>
@@ -275,7 +264,6 @@ function Preview({ src }: { src?: string }) {
                 </>
               )}
 
-              {/* Scores box (centered) */}
               <div className="scores">
                 <div>
                   <strong>Confidence:&nbsp;</strong>
