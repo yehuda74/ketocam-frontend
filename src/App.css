@@ -1,191 +1,277 @@
-/* ===== Base & layout ===== */
+/* ===== Global / reset ===== */
+:root {
+  --bg-outer: #0b1020;
+  --bg-screen: #f3f6fb;
+  --phone-frame: #0a0f1e;
+  --primary: #6b7bff;
+  --glass: rgba(255, 255, 255, 0.7);
+  --text: #0a0f1e;
+  --muted: #6b7280;
+}
+
+/* make the viewport predictable on mobile and desktop */
 html, body, #root {
   height: 100%;
+}
+html, body {
   margin: 0;
+  padding: 0;
+  background: var(--bg-outer);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  background: #0b1020;
-  color: #ffffff;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
+/* ===== Outer viewport centers everything ===== */
 .viewport {
-  min-height: 100vh;
+  min-height: 100svh;                    /* iOS-safe viewport */
   display: grid;
-  place-items: center;
-  padding: 16px env(safe-area-inset-right) calc(16px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
-  box-sizing: border-box;
+  place-items: center;                   /* perfect center on all screens */
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
+  background:
+    radial-gradient(1200px 800px at 10% -10%, #14244b 0%, transparent 60%),
+    radial-gradient(1200px 800px at 110% 110%, #11203f 0%, transparent 60%),
+    var(--bg-outer);
 }
 
-/* iPhone shell (your existing visual frame) */
+/* ===== Phone shell (scales to fit) ===== */
 .phone {
-  width: min(420px, 100%);
-  border-radius: 28px;
-  background: #0f1530;
-  box-shadow: 0 20px 60px rgba(0,0,0,.45);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
+  /* Scale down to fit both width and height; clamp for big monitors */
+  width: min(420px, calc(100vw - 32px));
+  height: min(860px, calc(100svh - 32px));
+  background: var(--phone-frame);
+  border-radius: 44px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 8px 20px rgba(0, 0, 0, 0.25) inset;
+  padding: 14px;                         /* inner bezel */
+  display: flex;
+  position: relative;
 }
 
+/* little notch bar (decorative) */
 .notch {
-  height: 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,0));
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8px;
+  width: 46%;
+  height: 22px;
+  background: #0e162b;
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset;
 }
 
+/* ===== Inner screen ===== */
 .screen {
-  padding: 18px 16px 28px;
+  flex: 1;
+  background: radial-gradient(160% 120% at 50% -20%, #ffffff 0%, #eaf0f7 60%, #e3eaf4 100%), var(--bg-screen);
+  border-radius: 30px;
+  overflow: auto;                        /* scroll if needed, never crop */
+  padding: clamp(16px, 3vw, 28px);
 }
 
 /* ===== Hero ===== */
 .heroCenter {
   text-align: center;
-  margin-bottom: 16px;
+  margin-top: clamp(8px, 2vh, 18px);
+  margin-bottom: clamp(12px, 3vh, 28px);
 }
-
-.appicon { font-size: 40px; }
+.appicon {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #7a5cff 0%, #8e5bff 45%, #a96cff 100%);
+  color: #ffd38a;
+  font-size: 36px;
+  box-shadow: 0 16px 40px rgba(123, 92, 255, 0.5);
+}
 .heroTitle {
-  margin: 8px 0 4px;
-  font-size: 22px;
-  color: #00d4ff;
-  font-weight: 700;
+  margin: 0 0 6px;
+  font-size: clamp(26px, 4.8vw, 38px);
+  letter-spacing: 0.2px;
 }
-.heroSub { margin: 0; color: #b8c4f0; }
+.heroSub {
+  margin: 0;
+  color: #5b6573;
+  font-size: clamp(13px, 2.6vw, 16px);
+}
 
-/* ===== Cards / panels ===== */
+/* ===== Upload card ===== */
 .glass {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 22px;
+  box-shadow: 0 12px 40px rgba(10, 15, 30, 0.18);
 }
 
 .uploadCard {
-  padding: 16px;
-  text-align: center;
+  margin: clamp(10px, 2.5vh, 18px) auto;
+  padding: clamp(16px, 3.5vw, 28px);
+  max-width: 560px;
   cursor: pointer;
   user-select: none;
+  transition: transform .12s ease;
 }
+.uploadCard:active { transform: scale(0.995); }
 
 .cameraCircle {
-  width: 68px;
-  height: 68px;
-  margin: 6px auto 12px;
-  border-radius: 999px;
+  width: clamp(84px, 24vw, 160px);
+  height: clamp(84px, 24vw, 160px);
+  margin: 4px auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(140% 140% at 30% 30%, #b78bff 0%, #7b63ff 40%, #6b4dff 100%);
   display: grid;
   place-items: center;
-  background: radial-gradient(100% 100% at 50% 0%, #1b254a 0%, #111834 100%);
-  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 22px 50px rgba(91, 99, 255, .35), inset 0 12px 28px rgba(255,255,255,.25);
 }
 
-.uploadTitle { margin: 4px 0 2px; font-size: 18px; font-weight: 700; }
-.uploadSub   { margin: 0 0 8px; color: #a9b5e1; }
-.uploadHint  { margin: 0; font-size: 13px; color: #8ea0d9; display: inline-flex; gap: 6px; align-items: center; }
-.uploadIcon  { display: inline-block; color: #8ea0d9; }
+.uploadTitle {
+  margin: 4px 0 4px;
+  text-align: center;
+  font-size: clamp(20px, 4.5vw, 32px);
+}
+.uploadSub {
+  margin: 0;
+  text-align: center;
+  color: #6f7a89;
+  font-size: clamp(13px, 3.5vw, 16px);
+}
+.uploadHint {
+  margin: 10px 0 0;
+  text-align: center;
+  color: #7a8493;
+  font-size: clamp(12px, 3.2vw, 15px);
+}
+.uploadIcon { vertical-align: -2px; margin-right: 6px; }
 
-/* ===== Preview image =====
-   This is the key part: the image will never overflow and always fit. */
+/* preview image keeps aspect and never overflows */
 .preview {
-  margin-top: 12px;
-  width: 100%;
-  max-height: min(60vh, 70dvh); /* roomy on phones, safe on desktop */
-  border-radius: 14px;
-  overflow: hidden;
-  background: #0c1124;
+  margin-top: 14px;
   display: grid;
   place-items: center;
 }
 .preview img {
-  display: block;
   max-width: 100%;
-  max-height: 100%;
+  max-height: min(44vh, 360px);
   width: auto;
   height: auto;
-  object-fit: contain;       /* show entire image without cropping */
-  image-orientation: from-image;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
 }
 
-/* ===== Action panel ===== */
-.panel { margin-top: 12px; padding: 12px; }
-
+/* ===== Analyze CTA panel ===== */
+.panel {
+  margin: 12px auto 0;
+  padding: clamp(12px, 3vw, 18px);
+  max-width: 560px;
+}
 .cta {
   width: 100%;
-  padding: 12px 16px;
+  height: 52px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #00d6a1 0%, #06b48e 100%);
+  color: white;
   font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  color: #0b1020;
-  background: #00d4ff;
-  transition: filter .15s ease;
+  letter-spacing: .2px;
+  font-size: clamp(16px, 4vw, 18px);
+  box-shadow: 0 12px 32px rgba(6, 180, 142, .35);
 }
-.cta:disabled { opacity: .65; cursor: default; }
-.cta:not(:disabled):hover { filter: brightness(.9); }
+.cta:disabled {
+  opacity: .6;
+  filter: saturate(.7);
+}
 
-/* Toast / errors */
+/* toast error */
 .toast {
   margin-top: 10px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 14px;
-  line-height: 1.35;
 }
-.toast.error { background: #3a1020; border: 1px solid #b00020; color: #ffd7df; }
+.toast.error {
+  background: #ffe8ea;
+  color: #8f1e2a;
+}
 
-/* ===== Results ===== */
-.result { padding: 14px; margin-top: 12px; }
-
-.topBadgeRow { display: flex; justify-content: center; margin-bottom: 8px; }
+/* ===== Result styling ===== */
+.topBadgeRow { display: grid; place-items: center; margin-bottom: 6px; }
 .topBadge {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.15);
-  font-size: 12px; letter-spacing: .3px;
-  background: rgba(255,255,255,.06);
+  border: 0; border-radius: 999px; padding: 6px 14px;
+  font-weight: 700; font-size: 13px; letter-spacing: .2px;
+  color: white;
 }
-.topBadge.ok { background: rgba(0, 212, 255, .15); border-color: rgba(0,212,255,.4); color: #aef5ff; }
-.topBadge.no { background: rgba(255, 86, 126, .15); border-color: rgba(255,86,126,.4); color: #ffc3d0; }
+.topBadge.ok { background: #15b57e; }
+.topBadge.no { background: #db3b56; }
 
-.row { display: flex; gap: 8px; align-items: center; }
-.between { justify-content: space-between; }
+.meal {
+  margin: 6px 0 6px;
+  font-size: clamp(18px, 4.5vw, 24px);
+}
+.reason {
+  margin: 0 0 14px;
+  color: #526070;
+  font-size: clamp(13px, 3.2vw, 15px);
+}
 
-.meal  { margin: 0; font-size: 18px; }
-.reason { margin: 6px 0 10px; color: #c8d2ff; }
-
+/* macro pills grid */
 .macros {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-bottom: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 .pill {
+  background: #fff;
   border-radius: 12px;
   padding: 10px 12px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(10,15,30,.08);
 }
-.pill.warn { border-color: #ff6a6a; box-shadow: 0 0 0 1px rgba(255,106,106,.2) inset; }
-.pill .k { font-size: 12px; color: #9db0ec; }
-.pill .v { font-weight: 700; font-size: 16px; }
+.pill.warn { outline: 2px solid #fbbf24; }
+.pill .k { color: #6b7280; font-size: 12px; }
+.pill .v { font-weight: 800; font-size: 16px; }
 
+/* chips/swaps */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  padding: 6px 10px; border-radius: 999px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  font-size: 12px; color: #d9e1ff;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
 }
 
-.swaps { margin: 8px 0 0 18px; padding: 0; }
+.swaps { padding-left: 18px; margin: 8px 0; }
 .swaps li { margin: 4px 0; }
-.muted { color: #a5b2e7; }
+.muted { color: #6b7280; }
 
-.scores { margin-top: 6px; text-align: center; color: #cdd7ff; }
+/* scores line */
+.scores {
+  display: grid;
+  place-items: center;
+  margin-top: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  text-align: center;
+}
 
-/* Spacer at the bottom so iOS toolbar doesn’t overlap */
-.spacer { height: max(16px, env(safe-area-inset-bottom)); }
+/* spacer to avoid home-bar overlap when scrolling */
+.spacer { height: max(12px, env(safe-area-inset-bottom)); }
 
-/* Larger screens: widen phone a bit */
-@media (min-width: 920px) {
-  .phone { width: 460px; }
-  .preview { max-height: 65vh; }
+/* small screens: make pills 2-wide */
+@media (max-width: 420px) {
+  .macros {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
