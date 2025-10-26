@@ -1,277 +1,68 @@
-/* ===== Global / reset ===== */
-:root {
-  --bg-outer: #0b1020;
-  --bg-screen: #f3f6fb;
-  --phone-frame: #0a0f1e;
-  --primary: #6b7bff;
-  --glass: rgba(255, 255, 255, 0.7);
-  --text: #0a0f1e;
-  --muted: #6b7280;
-}
-
-/* make the viewport predictable on mobile and desktop */
+/* ===== Universal Centering Fix ===== */
 html, body, #root {
   height: 100%;
-}
-html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg-outer);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
-    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-/* ===== Outer viewport centers everything ===== */
-.viewport {
-  min-height: 100svh;                    /* iOS-safe viewport */
-  display: grid;
-  place-items: center;                   /* perfect center on all screens */
-  padding:
-    max(12px, env(safe-area-inset-top))
-    max(12px, env(safe-area-inset-right))
-    max(12px, env(safe-area-inset-bottom))
-    max(12px, env(safe-area-inset-left));
-  background:
-    radial-gradient(1200px 800px at 10% -10%, #14244b 0%, transparent 60%),
-    radial-gradient(1200px 800px at 110% 110%, #11203f 0%, transparent 60%),
-    var(--bg-outer);
-}
-
-/* ===== Phone shell (scales to fit) ===== */
-.phone {
-  /* Scale down to fit both width and height; clamp for big monitors */
-  width: min(420px, calc(100vw - 32px));
-  height: min(860px, calc(100svh - 32px));
-  background: var(--phone-frame);
-  border-radius: 44px;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.55),
-    0 8px 20px rgba(0, 0, 0, 0.25) inset;
-  padding: 14px;                         /* inner bezel */
+/* This centers the app perfectly on all screens */
+body {
   display: flex;
-  position: relative;
+  justify-content: center;
+  align-items: center;
+  min-height: 100svh; /* for iOS Safari */
+  min-height: 100dvh; /* for Chrome/modern browsers */
+  overflow: hidden;
+  background: linear-gradient(180deg, #0b1020 0%, #1a223d 100%);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* little notch bar (decorative) */
+/* Viewport wrapper to keep internal centering */
+.viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Phone frame stays centered, never cropped */
+.phone {
+  width: min(430px, calc(100vw - 32px));
+  height: min(880px, calc(100svh - 32px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 48px;
+  background: linear-gradient(160deg, #0c1224 60%, #1b2346 100%);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.05) inset,
+    0 12px 45px rgba(0, 0, 0, 0.55),
+    0 0 70px rgba(110, 145, 255, 0.35);
+  padding: 14px;
+}
+
+/* Keep notch and screen proportional */
 .notch {
   position: absolute;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  top: 8px;
   width: 46%;
   height: 22px;
-  background: #0e162b;
+  background: #0f1733;
   border-radius: 14px;
-  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset;
 }
 
-/* ===== Inner screen ===== */
 .screen {
   flex: 1;
-  background: radial-gradient(160% 120% at 50% -20%, #ffffff 0%, #eaf0f7 60%, #e3eaf4 100%), var(--bg-screen);
-  border-radius: 30px;
-  overflow: auto;                        /* scroll if needed, never crop */
+  border-radius: 32px;
+  overflow-y: auto;
+  background: radial-gradient(130% 100% at 50% -30%, #ffffff 0%, #f2f4f9 60%, #ebeff5 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
   padding: clamp(16px, 3vw, 28px);
-}
-
-/* ===== Hero ===== */
-.heroCenter {
-  text-align: center;
-  margin-top: clamp(8px, 2vh, 18px);
-  margin-bottom: clamp(12px, 3vh, 28px);
-}
-.appicon {
-  width: 68px;
-  height: 68px;
-  border-radius: 22px;
-  margin: 0 auto 10px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(180deg, #7a5cff 0%, #8e5bff 45%, #a96cff 100%);
-  color: #ffd38a;
-  font-size: 36px;
-  box-shadow: 0 16px 40px rgba(123, 92, 255, 0.5);
-}
-.heroTitle {
-  margin: 0 0 6px;
-  font-size: clamp(26px, 4.8vw, 38px);
-  letter-spacing: 0.2px;
-}
-.heroSub {
-  margin: 0;
-  color: #5b6573;
-  font-size: clamp(13px, 2.6vw, 16px);
-}
-
-/* ===== Upload card ===== */
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 22px;
-  box-shadow: 0 12px 40px rgba(10, 15, 30, 0.18);
-}
-
-.uploadCard {
-  margin: clamp(10px, 2.5vh, 18px) auto;
-  padding: clamp(16px, 3.5vw, 28px);
-  max-width: 560px;
-  cursor: pointer;
-  user-select: none;
-  transition: transform .12s ease;
-}
-.uploadCard:active { transform: scale(0.995); }
-
-.cameraCircle {
-  width: clamp(84px, 24vw, 160px);
-  height: clamp(84px, 24vw, 160px);
-  margin: 4px auto 16px;
-  border-radius: 50%;
-  background: radial-gradient(140% 140% at 30% 30%, #b78bff 0%, #7b63ff 40%, #6b4dff 100%);
-  display: grid;
-  place-items: center;
-  box-shadow: 0 22px 50px rgba(91, 99, 255, .35), inset 0 12px 28px rgba(255,255,255,.25);
-}
-
-.uploadTitle {
-  margin: 4px 0 4px;
-  text-align: center;
-  font-size: clamp(20px, 4.5vw, 32px);
-}
-.uploadSub {
-  margin: 0;
-  text-align: center;
-  color: #6f7a89;
-  font-size: clamp(13px, 3.5vw, 16px);
-}
-.uploadHint {
-  margin: 10px 0 0;
-  text-align: center;
-  color: #7a8493;
-  font-size: clamp(12px, 3.2vw, 15px);
-}
-.uploadIcon { vertical-align: -2px; margin-right: 6px; }
-
-/* preview image keeps aspect and never overflows */
-.preview {
-  margin-top: 14px;
-  display: grid;
-  place-items: center;
-}
-.preview img {
-  max-width: 100%;
-  max-height: min(44vh, 360px);
-  width: auto;
-  height: auto;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
-}
-
-/* ===== Analyze CTA panel ===== */
-.panel {
-  margin: 12px auto 0;
-  padding: clamp(12px, 3vw, 18px);
-  max-width: 560px;
-}
-.cta {
-  width: 100%;
-  height: 52px;
-  border: 0;
-  border-radius: 14px;
-  background: linear-gradient(180deg, #00d6a1 0%, #06b48e 100%);
-  color: white;
-  font-weight: 700;
-  letter-spacing: .2px;
-  font-size: clamp(16px, 4vw, 18px);
-  box-shadow: 0 12px 32px rgba(6, 180, 142, .35);
-}
-.cta:disabled {
-  opacity: .6;
-  filter: saturate(.7);
-}
-
-/* toast error */
-.toast {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 14px;
-}
-.toast.error {
-  background: #ffe8ea;
-  color: #8f1e2a;
-}
-
-/* ===== Result styling ===== */
-.topBadgeRow { display: grid; place-items: center; margin-bottom: 6px; }
-.topBadge {
-  border: 0; border-radius: 999px; padding: 6px 14px;
-  font-weight: 700; font-size: 13px; letter-spacing: .2px;
-  color: white;
-}
-.topBadge.ok { background: #15b57e; }
-.topBadge.no { background: #db3b56; }
-
-.meal {
-  margin: 6px 0 6px;
-  font-size: clamp(18px, 4.5vw, 24px);
-}
-.reason {
-  margin: 0 0 14px;
-  color: #526070;
-  font-size: clamp(13px, 3.2vw, 15px);
-}
-
-/* macro pills grid */
-.macros {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-.pill {
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px 12px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(10,15,30,.08);
-}
-.pill.warn { outline: 2px solid #fbbf24; }
-.pill .k { color: #6b7280; font-size: 12px; }
-.pill .v { font-weight: 800; font-size: 16px; }
-
-/* chips/swaps */
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  background: #eef2ff;
-  color: #3730a3;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-
-.swaps { padding-left: 18px; margin: 8px 0; }
-.swaps li { margin: 4px 0; }
-.muted { color: #6b7280; }
-
-/* scores line */
-.scores {
-  display: grid;
-  place-items: center;
-  margin-top: 6px;
-  color: #4b5563;
-  font-size: 14px;
-  text-align: center;
-}
-
-/* spacer to avoid home-bar overlap when scrolling */
-.spacer { height: max(12px, env(safe-area-inset-bottom)); }
-
-/* small screens: make pills 2-wide */
-@media (max-width: 420px) {
-  .macros {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
