@@ -1,14 +1,15 @@
 /* ===== Global Theme ===== */
 :root {
-  --bg-outer-top: #f3f5fa;   /* much lighter background top */
-  --bg-outer-bottom: #e2e7f2; /* 40% lighter gradient bottom */
-  --phone-frame: #0d1326;
-  --phone-shadow: rgba(0, 0, 0, 0.35);
-  --phone-glow: rgba(90, 120, 255, 0.25);
-  --bg-screen: #f9fafd;
+  --bg-outer: #dce3f0; /* light background for contrast */
+  --bg-gradient-top: #e7ecf6;
+  --bg-gradient-bottom: #d3dae7;
+  --phone-frame: #0c1224;
+  --phone-shadow: rgba(0, 0, 0, 0.45);
+  --phone-glow: rgba(110, 140, 255, 0.25);
+  --bg-screen: #f6f8fc;
   --text: #0b132b;
   --muted: #6b7280;
-  --glass: rgba(255, 255, 255, 0.78);
+  --glass: rgba(255, 255, 255, 0.75);
   --primary: #7a5cff;
 }
 
@@ -23,12 +24,11 @@ html, body {
   color: var(--text);
   background: linear-gradient(
     180deg,
-    var(--bg-outer-top) 0%,
-    var(--bg-outer-bottom) 100%
+    var(--bg-gradient-top) 0%,
+    var(--bg-gradient-bottom) 100%
   );
   display: grid;
   place-items: center;
-  overflow: hidden;
 }
 
 /* ===== Viewport ===== */
@@ -42,8 +42,8 @@ html, body {
     max(20px, env(safe-area-inset-bottom))
     max(20px, env(safe-area-inset-left));
   background:
-    radial-gradient(900px 700px at 50% 0%, rgba(255,255,255,0.95) 0%, transparent 70%),
-    linear-gradient(180deg, var(--bg-outer-top), var(--bg-outer-bottom));
+    radial-gradient(700px 600px at 50% 10%, rgba(255,255,255,0.9) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-gradient-top), var(--bg-gradient-bottom));
 }
 
 /* ===== Phone Container ===== */
@@ -54,9 +54,9 @@ html, body {
   border-radius: 48px;
   position: relative;
   box-shadow:
-    0 0 0 4px rgba(255, 255, 255, 0.45),
+    0 0 0 4px rgba(255, 255, 255, 0.3),
     0 20px 60px var(--phone-shadow),
-    0 0 100px var(--phone-glow);
+    0 0 80px var(--phone-glow);
   padding: 16px;
   display: flex;
   justify-content: center;
@@ -66,9 +66,9 @@ html, body {
 .phone:hover {
   transform: scale(1.01);
   box-shadow:
-    0 0 0 4px rgba(255, 255, 255, 0.6),
-    0 24px 70px rgba(0, 0, 0, 0.4),
-    0 0 120px rgba(110, 140, 255, 0.4);
+    0 0 0 4px rgba(255, 255, 255, 0.4),
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 100px rgba(110, 140, 255, 0.35);
 }
 
 /* ===== Notch ===== */
@@ -79,9 +79,9 @@ html, body {
   transform: translateX(-50%);
   width: 44%;
   height: 22px;
-  background: #101733;
+  background: #0f1a35;
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(255,255,255,0.1) inset;
+  box-shadow: 0 1px 2px rgba(255,255,255,0.05) inset;
 }
 
 /* ===== Screen ===== */
@@ -94,8 +94,8 @@ html, body {
   overflow-y: auto;
   padding: clamp(16px, 3vw, 28px);
   box-shadow:
-    inset 0 1px 4px rgba(0,0,0,0.06),
-    0 0 40px rgba(255,255,255,0.6);
+    inset 0 1px 4px rgba(0,0,0,0.08),
+    0 0 30px rgba(255,255,255,0.5);
 }
 
 /* ===== Hero ===== */
@@ -114,27 +114,27 @@ html, body {
   font-size: 38px;
   background: linear-gradient(180deg, #7a5cff 0%, #8e5bff 45%, #a96cff 100%);
   color: #ffd38a;
-  box-shadow: 0 14px 40px rgba(123, 92, 255, 0.4);
+  box-shadow: 0 14px 40px rgba(123, 92, 255, 0.45);
 }
 .heroTitle {
   margin: 0;
   font-size: clamp(26px, 5vw, 38px);
   font-weight: 700;
-  color: #1ea3ff;
+  color: #2b8dff;
 }
 .heroSub {
   margin: 6px 0 0;
-  color: #555e6a;
+  color: #5b6573;
   font-size: clamp(13px, 2.8vw, 16px);
 }
 
 /* ===== Upload Card ===== */
 .glass {
   background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 22px;
-  box-shadow: 0 10px 40px rgba(10, 15, 30, 0.08);
+  box-shadow: 0 10px 40px rgba(10, 15, 30, 0.1);
 }
 
 .uploadCard {
@@ -155,7 +155,7 @@ html, body {
   background: radial-gradient(140% 140% at 30% 30%, #b78bff 0%, #7b63ff 40%, #6b4dff 100%);
   display: grid;
   place-items: center;
-  box-shadow: 0 22px 50px rgba(91, 99, 255, .3), inset 0 12px 28px rgba(255,255,255,.25);
+  box-shadow: 0 22px 50px rgba(91, 99, 255, .35), inset 0 12px 28px rgba(255,255,255,.25);
 }
 
 .uploadTitle {
@@ -187,7 +187,7 @@ html, body {
   max-width: 100%;
   max-height: min(44vh, 360px);
   border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
 }
 
 /* ===== Spacer ===== */
