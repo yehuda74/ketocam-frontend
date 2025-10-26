@@ -1,128 +1,142 @@
-/* ===== Global Colors & Variables ===== */
+/* ===== Global Theme ===== */
 :root {
-  --bg-outer: #0b1020;
-  --bg-screen: #f3f6fb;
-  --phone-frame: #0a0f1e;
-  --phone-highlight: #182548;
-  --primary: #6b7bff;
-  --glass: rgba(255, 255, 255, 0.7);
-  --text: #0a0f1e;
+  --bg-outer: #dce3f0; /* light background for contrast */
+  --bg-gradient-top: #e7ecf6;
+  --bg-gradient-bottom: #d3dae7;
+  --phone-frame: #0c1224;
+  --phone-shadow: rgba(0, 0, 0, 0.45);
+  --phone-glow: rgba(110, 140, 255, 0.25);
+  --bg-screen: #f6f8fc;
+  --text: #0b132b;
   --muted: #6b7280;
+  --glass: rgba(255, 255, 255, 0.75);
+  --primary: #7a5cff;
 }
 
-/* ===== Base reset ===== */
+/* ===== Base ===== */
 html, body, #root {
   height: 100%;
 }
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg-outer);
-  color: var(--text);
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  color: var(--text);
+  background: linear-gradient(
+    180deg,
+    var(--bg-gradient-top) 0%,
+    var(--bg-gradient-bottom) 100%
+  );
+  display: grid;
+  place-items: center;
 }
 
-/* ===== Center the phone ===== */
+/* ===== Viewport ===== */
 .viewport {
   min-height: 100svh;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(1200px 800px at 50% 0%, #101a34 0%, transparent 70%),
-    linear-gradient(180deg, #060a18 0%, #0b1020 100%);
   padding:
-    max(16px, env(safe-area-inset-top))
-    max(16px, env(safe-area-inset-right))
-    max(16px, env(safe-area-inset-bottom))
-    max(16px, env(safe-area-inset-left));
+    max(20px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  background:
+    radial-gradient(700px 600px at 50% 10%, rgba(255,255,255,0.9) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-gradient-top), var(--bg-gradient-bottom));
 }
 
-/* ===== Phone shell ===== */
+/* ===== Phone Container ===== */
 .phone {
   width: min(430px, calc(100vw - 32px));
   height: min(880px, calc(100svh - 32px));
-  background: linear-gradient(160deg, var(--phone-frame) 60%, var(--phone-highlight) 100%);
-  border-radius: 44px;
-  box-shadow:
-    0 0 0 3px rgba(255, 255, 255, 0.05) inset,
-    0 10px 40px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(65, 105, 255, 0.15);
-  padding: 14px;
-  display: flex;
+  background: var(--phone-frame);
+  border-radius: 48px;
   position: relative;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.3),
+    0 20px 60px var(--phone-shadow),
+    0 0 80px var(--phone-glow);
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .phone:hover {
-  transform: scale(1.005);
+  transform: scale(1.01);
   box-shadow:
-    0 0 0 3px rgba(255, 255, 255, 0.08) inset,
-    0 15px 45px rgba(0, 0, 0, 0.65),
-    0 0 60px rgba(91, 137, 255, 0.25);
+    0 0 0 4px rgba(255, 255, 255, 0.4),
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 100px rgba(110, 140, 255, 0.35);
 }
 
-/* Decorative notch */
+/* ===== Notch ===== */
 .notch {
   position: absolute;
   left: 50%;
+  top: 10px;
   transform: translateX(-50%);
-  top: 8px;
-  width: 46%;
+  width: 44%;
   height: 22px;
-  background: #0e162b;
+  background: #0f1a35;
   border-radius: 14px;
-  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset;
+  box-shadow: 0 1px 2px rgba(255,255,255,0.05) inset;
 }
 
-/* ===== Screen area ===== */
+/* ===== Screen ===== */
 .screen {
   flex: 1;
-  background: radial-gradient(160% 120% at 50% -20%, #ffffff 0%, #eaf0f7 60%, #e3eaf4 100%);
-  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-screen);
+  border-radius: 34px;
   overflow-y: auto;
   padding: clamp(16px, 3vw, 28px);
+  box-shadow:
+    inset 0 1px 4px rgba(0,0,0,0.08),
+    0 0 30px rgba(255,255,255,0.5);
 }
 
-/* ===== Hero section ===== */
+/* ===== Hero ===== */
 .heroCenter {
   text-align: center;
   margin-top: clamp(8px, 2vh, 18px);
   margin-bottom: clamp(12px, 3vh, 28px);
 }
 .appicon {
-  width: 68px;
-  height: 68px;
-  border-radius: 22px;
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
   margin: 0 auto 10px;
   display: grid;
   place-items: center;
+  font-size: 38px;
   background: linear-gradient(180deg, #7a5cff 0%, #8e5bff 45%, #a96cff 100%);
   color: #ffd38a;
-  font-size: 36px;
-  box-shadow: 0 16px 40px rgba(123, 92, 255, 0.5);
+  box-shadow: 0 14px 40px rgba(123, 92, 255, 0.45);
 }
 .heroTitle {
-  margin: 0 0 6px;
-  font-size: clamp(26px, 4.8vw, 38px);
-  color: #1eb7ff;
-  letter-spacing: 0.2px;
+  margin: 0;
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 700;
+  color: #2b8dff;
 }
 .heroSub {
-  margin: 0;
+  margin: 6px 0 0;
   color: #5b6573;
-  font-size: clamp(13px, 2.6vw, 16px);
+  font-size: clamp(13px, 2.8vw, 16px);
 }
 
-/* ===== Upload card ===== */
+/* ===== Upload Card ===== */
 .glass {
   background: var(--glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 22px;
-  box-shadow: 0 12px 40px rgba(10, 15, 30, 0.18);
+  box-shadow: 0 10px 40px rgba(10, 15, 30, 0.1);
 }
+
 .uploadCard {
   margin: clamp(10px, 2.5vh, 18px) auto;
   padding: clamp(16px, 3.5vw, 28px);
@@ -148,6 +162,7 @@ html, body {
   margin: 4px 0 4px;
   text-align: center;
   font-size: clamp(20px, 4.5vw, 32px);
+  font-weight: 700;
 }
 .uploadSub {
   margin: 0;
@@ -161,9 +176,8 @@ html, body {
   color: #7a8493;
   font-size: clamp(12px, 3.2vw, 15px);
 }
-.uploadIcon { vertical-align: -2px; margin-right: 6px; }
 
-/* preview image keeps aspect */
+/* ===== Preview ===== */
 .preview {
   margin-top: 14px;
   display: grid;
@@ -172,18 +186,11 @@ html, body {
 .preview img {
   max-width: 100%;
   max-height: min(44vh, 360px);
-  width: auto;
-  height: auto;
   border-radius: 14px;
   box-shadow: 0 8px 24px rgba(0,0,0,.2);
 }
 
-/* Spacer at bottom */
-.spacer { height: max(16px, env(safe-area-inset-bottom)); }
-
-/* Responsive macro grid fix */
-@media (max-width: 420px) {
-  .macros {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* ===== Spacer ===== */
+.spacer {
+  height: max(20px, env(safe-area-inset-bottom));
 }
