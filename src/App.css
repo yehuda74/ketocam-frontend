@@ -66,3 +66,30 @@ body {
   justify-content: start;
   padding: clamp(16px, 3vw, 28px);
 }
+
+/* ensure a sensible default */
+:root { --phone-scale: 1; }
+
+/* allow center wrapper to scroll if very small screens */
+.centerRoot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: auto;            /* <- important: lets content be scrolled when scaled */
+}
+
+/* scale the phone to fit */
+.phone {
+  /* other existing styles... */
+  transform-origin: center top;
+  transform: scale(var(--phone-scale));
+  will-change: transform;
+}
+
+/* when scaled down, make sure inner scrolling still behaves */
+.screen {
+  max-height: calc(880px * var(--phone-scale));
+}
